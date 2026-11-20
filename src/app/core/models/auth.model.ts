@@ -16,6 +16,8 @@ export interface AuthTokensResponse {
 export interface RegisterRequest {
   email: string;
   password: string;
+  accountType: 'CUSTOMER' | 'BUSINESS_OWNER';
+  teamSize: string;
   firstName?: string;
   lastName?: string;
 }

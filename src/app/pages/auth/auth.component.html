@@ -1,91 +1,192 @@
 <main class="auth-page">
-  <a class="brand" routerLink="/" aria-label="Feedzony home">Feed<span>zony</span></a>
-
   @if (user(); as currentUser) {
     <section class="auth-card logout-panel" aria-labelledby="logout-title">
-      <span class="status-mark" aria-hidden="true">✓</span>
-      <p class="eyebrow">ACCOUNT</p>
+      <div class="brand-header" aria-label="Feedzony Intelligence Portal">
+        <div class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 16l5-5 3 3 6-7M4 20h16" /></svg>
+        </div>
+        <span class="brand-name">Feedzony <small>INTELLIGENCE PORTAL</small></span>
+      </div>
       <h1 id="logout-title">You’re signed in</h1>
-      <p class="description">
-        Welcome{{ currentUser.firstName ? ', ' + currentUser.firstName : '' }}.
-        Your account is connected as <strong>{{ currentUser.email }}</strong>.
-      </p>
-
-      @if (errorMessage()) {
-        <p class="error-message" role="alert">{{ errorMessage() }}</p>
-      }
-
-      <button class="primary-button" type="button" [disabled]="isLoading()" (click)="logout()">
-        {{ isLoading() ? 'Signing out…' : 'Log out' }}
-      </button>
+      <p class="description">Welcome{{ currentUser.firstName ? ', ' + currentUser.firstName : '' }}. Your account is connected as <strong>{{ currentUser.email }}</strong>.</p>
+      @if (errorMessage()) { <p class="error-message" role="alert">{{ errorMessage() }}</p> }
+      <button class="primary-button" type="button" [disabled]="isLoading()" (click)="logout()">{{ isLoading() ? 'Signing out…' : 'Log out' }}</button>
       <a class="back-link" routerLink="/">Back to Feedzony</a>
     </section>
   } @else {
-    <section class="auth-card" aria-labelledby="auth-title">
-      <p class="eyebrow">CUSTOMER EXPERIENCE PLATFORM</p>
-      <h1 id="auth-title">{{ mode() === 'login' ? 'Welcome back' : 'Create your account' }}</h1>
-      <p class="description">
-        {{ mode() === 'login' ? 'Log in to continue to Feedzony.' : 'Join Feedzony and make every voice count.' }}
-      </p>
+    <section class="auth-card" [class.register-card]="mode() === 'register'" [class.reset-card]="mode() === 'reset'" aria-labelledby="auth-title">
+      <header class="brand-header">
+        <div class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 16l5-5 3 3 6-7M4 20h16" /></svg>
+        </div>
+        <span class="brand-name">Feedzony <small>Intelligence</small></span>
+        @if (mode() === 'login') {
+          <span class="header-badges">
+            <span class="status-badge soc"><b></b> SOC-2 Type II</span>
+            <span class="status-badge"><b></b> Enterprise SAML</span>
+            <span class="status-badge"><b></b> 256-bit AES</span>
+          </span>
+        } @else {
+          <span class="header-badges register-badges">
+            <span class="status-badge soc"><b></b> SOC-2 Type II</span>
+            <span class="status-badge"><b></b> Enterprise SAML</span>
+          </span>
+        }
+      </header>
 
-      <div class="mode-tabs" role="tablist" aria-label="Account action">
-        <button type="button" role="tab" [attr.aria-selected]="mode() === 'login'" (click)="selectMode('login')">Log in</button>
-        <button type="button" role="tab" [attr.aria-selected]="mode() === 'register'" (click)="selectMode('register')">Register</button>
-      </div>
-
-      @if (errorMessage()) {
-        <p class="error-message" role="alert">{{ errorMessage() }}</p>
+      @if (mode() === 'register') {
+        <div class="security-line register-security">
+          <span class="security-shield">◎</span> Enterprise SAML &amp; 256-bit AES
+          <span class="security-rating">▣ 99.99% SLA</span>
+        </div>
       }
+
+      <nav class="mode-tabs" role="tablist" aria-label="Account action">
+        <button type="button" role="tab" [attr.aria-selected]="mode() === 'login'" [class.active]="mode() === 'login'" (click)="selectMode('login')">Sign In</button>
+        <button type="button" role="tab" [attr.aria-selected]="mode() === 'register'" [class.active]="mode() === 'register'" (click)="selectMode('register')">Register</button>
+        <button type="button" role="tab" [attr.aria-selected]="mode() === 'reset'" [class.active]="mode() === 'reset'" (click)="selectMode('reset')">Reset</button>
+      </nav>
+
+      @if (errorMessage()) { <p class="error-message" role="alert">{{ errorMessage() }}</p> }
+      @if (successMessage()) { <p class="success-message" role="status">{{ successMessage() }}</p> }
 
       @if (mode() === 'login') {
+        <h1 id="auth-title">Welcome back to Feedzony</h1>
+        <p class="description">Enter your credentials to access your feedback intelligence<br class="desktop-break"> workspace.</p>
+        <div class="divider"><span>OR CONTINUE WITH WORK EMAIL</span></div>
+
         <form [formGroup]="loginForm" (ngSubmit)="login()">
-          <label for="login-email">Email address</label>
-          <input id="login-email" type="email" autocomplete="email" formControlName="email" placeholder="you@example.com" />
-          @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
-            <small class="field-error">Enter a valid email address.</small>
-          }
+          <label for="login-email">Work Email Address</label>
+          <div class="input-wrap">
+            <svg class="field-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 7 9-7"/></svg>
+            <input id="login-email" type="email" autocomplete="email" formControlName="email" placeholder="alex.morgan@acmecorp.com" />
+          </div>
+          @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) { <small class="field-error">Enter a valid email address.</small> }
 
           <label for="login-password">Password</label>
-          <input id="login-password" type="password" autocomplete="current-password" formControlName="password" placeholder="At least 8 characters" />
-          @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
-            <small class="field-error">Password must be 8–128 characters.</small>
-          }
+          <div class="input-wrap">
+            <svg class="field-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="10" width="12" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+            <input id="login-password" [type]="showLoginPassword() ? 'text' : 'password'" autocomplete="current-password" formControlName="password" placeholder="••••••••••••" />
+            <button class="password-toggle" type="button" (click)="showLoginPassword.set(!showLoginPassword())" [attr.aria-label]="showLoginPassword() ? 'Hide password' : 'Show password'">
+              <svg viewBox="0 0 24 24"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) { <small class="field-error">Password must be 8–128 characters.</small> }
 
-          <button class="primary-button" type="submit" [disabled]="isLoading()">
-            {{ isLoading() ? 'Logging in…' : 'Log in' }}
-          </button>
-        </form>
-      } @else {
-        <form [formGroup]="registerForm" (ngSubmit)="register()">
-          <div class="name-row">
-            <div>
-              <label for="register-first-name">First name <span>(optional)</span></label>
-              <input id="register-first-name" type="text" autocomplete="given-name" formControlName="firstName" placeholder="Ada" />
-            </div>
-            <div>
-              <label for="register-last-name">Last name <span>(optional)</span></label>
-              <input id="register-last-name" type="text" autocomplete="family-name" formControlName="lastName" placeholder="Lovelace" />
-            </div>
+          <div class="login-options">
+            <label class="check-row"><input type="checkbox" checked /><span>Keep me signed in for 30 days</span></label>
+            <button type="button" class="text-button" (click)="selectMode('reset')">Forgot password?</button>
           </div>
 
-          <label for="register-email">Email address</label>
-          <input id="register-email" type="email" autocomplete="email" formControlName="email" placeholder="you@example.com" />
-          @if (registerForm.controls.email.touched && registerForm.controls.email.invalid) {
-            <small class="field-error">Enter a valid email address.</small>
-          }
-
-          <label for="register-password">Password</label>
-          <input id="register-password" type="password" autocomplete="new-password" formControlName="password" placeholder="At least 8 characters" />
-          @if (registerForm.controls.password.touched && registerForm.controls.password.invalid) {
-            <small class="field-error">Password must be 8–128 characters.</small>
-          }
-
           <button class="primary-button" type="submit" [disabled]="isLoading()">
-            {{ isLoading() ? 'Creating account…' : 'Create account' }}
+            {{ isLoading() ? 'Signing in…' : 'Sign in to Workspace' }} <span aria-hidden="true">→</span>
           </button>
         </form>
+
+        <div class="mfa-note">
+          <span class="mfa-icon"><svg viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.4 9-8 11-4.6-2-8-6-8-11V5l8-3z"/><path d="M9 12l2 2 4-5"/></svg></span>
+          <span>Protected by enterprise multi-factor authentication (MFA).<br><small>Biometric keys and hardware FIDO2 supported.</small></span>
+        </div>
+        <p class="create-account">Don't have an enterprise account? <button type="button" (click)="selectMode('register')">Create account</button></p>
+      } @else if (mode() === 'register') {
+        <h1 id="auth-title" class="register-title">Create your Feedzony account</h1>
+        <p class="description register-description">Join thousands of brands and customers sharing authentic feedback.</p>
+        <p class="account-label">I want to use Feedzony as</p>
+        <div class="account-types">
+          <button type="button" class="account-type" [class.selected]="accountType() === 'CUSTOMER'" [attr.aria-pressed]="accountType() === 'CUSTOMER'" (click)="selectAccountType('CUSTOMER')">
+            <span class="account-icon customer-icon"><svg viewBox="0 0 24 24"><path d="M8 11a4 4 0 108 0 4 4 0 00-8 0zM4 21c0-4 3-7 7-7h2c4 0 7 3 7 7"/></svg></span>
+            <span><strong>Customer</strong><small>Submit feedback &amp; track reviews</small></span>
+            @if (accountType() === 'CUSTOMER') { <b class="check-mark">✓</b> }
+          </button>
+          <button type="button" class="account-type" [class.selected]="accountType() === 'BUSINESS_OWNER'" [attr.aria-pressed]="accountType() === 'BUSINESS_OWNER'" (click)="selectAccountType('BUSINESS_OWNER')">
+            <span class="account-icon business-icon"><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M9 7V5h6v2M8 12h8M8 16h5"/></svg></span>
+            <span><strong>Business owner</strong><small>Collect, manage &amp; analyze feedback</small></span>
+            @if (accountType() === 'BUSINESS_OWNER') { <b class="check-mark">✓</b> }
+          </button>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="register()">
+          <label for="register-full-name">Full Name</label>
+          <div class="input-wrap">
+            <svg class="field-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg>
+            <input id="register-full-name" type="text" autocomplete="name" formControlName="fullName" placeholder="Sarah Connor" />
+          </div>
+
+          <label for="register-email">Work Email Address</label>
+          <div class="input-wrap">
+            <svg class="field-icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 7 9-7"/></svg>
+            <input id="register-email" type="email" autocomplete="email" formControlName="email" placeholder="sarah@acme-corp.io" />
+          </div>
+
+          <label for="register-team-size">Team Size</label>
+          <select id="register-team-size" formControlName="teamSize">
+            <option value="1-10">1–10 members</option>
+            <option value="10-50">10–50 members</option>
+            <option value="51-200">51–200 members</option>
+            <option value="201-500">201–500 members</option>
+            <option value="501+">501+ members</option>
+          </select>
+
+          <label for="register-password">Create Password</label>
+          <div class="input-wrap">
+            <svg class="field-icon" viewBox="0 0 24 24"><rect x="6" y="10" width="12" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+            <input id="register-password" [type]="showRegisterPassword() ? 'text' : 'password'" autocomplete="new-password" formControlName="password" placeholder="At least 8 characters..." />
+            <button class="password-toggle" type="button" (click)="showRegisterPassword.set(!showRegisterPassword())" [attr.aria-label]="showRegisterPassword() ? 'Hide password' : 'Show password'">
+              <svg viewBox="0 0 24 24"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="password-strength">Password strength: <span>Weak</span> · Min 8 chars, 1 uppercase, 1 lowercase, 1 symbol</div>
+          <label class="terms-row"><input type="checkbox" formControlName="terms" /><span>I agree to Feedzony Terms of Service and Privacy Policy.</span></label>
+
+          <button class="primary-button" type="submit" [disabled]="isLoading()">
+            {{ isLoading() ? 'Creating account…' : 'Create Feedzony Account' }} <span aria-hidden="true">→</span>
+          </button>
+        </form>
+        <p class="create-account">Already have an account? <button type="button" (click)="selectMode('login')">Sign in</button></p>
+      } @else {
+        <div class="reset-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M20 7v5h-5"/><path d="M19 12a7 7 0 10-2 5"/></svg>
+        </div>
+        <h1 id="auth-title" class="reset-title">Reset your password</h1>
+        <p class="description reset-description">Enter your verified work email and we will send<br class="desktop-break"> you secure recovery instructions and a one-time access token.</p>
+
+        <form [formGroup]="resetForm" (ngSubmit)="resetPassword()">
+          <div class="reset-label-row">
+            <label for="reset-email">Work Email Address</label>
+            <span>Work-domain only</span>
+          </div>
+          <div class="input-wrap">
+            <svg class="field-icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 7 9-7"/></svg>
+            <input id="reset-email" type="email" autocomplete="email" formControlName="email" placeholder="alex.morgan@acmecorp.com" />
+          </div>
+          @if (resetForm.controls.email.touched && resetForm.controls.email.invalid) { <small class="field-error">Enter a valid work email address.</small> }
+
+          <div class="reset-help">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7h.01"/></svg>
+            <span>For enterprise SSO / Okta accounts, contact your organization administrator or authenticate via your company identity provider.</span>
+          </div>
+
+          <button class="primary-button reset-button" type="submit" [disabled]="isLoading()">
+            {{ isLoading() ? 'Sending…' : 'Send Reset Link & Token' }} <span aria-hidden="true">→</span>
+          </button>
+        </form>
+        <div class="reset-footer">
+          <button type="button" class="back-button" (click)="selectMode('login')">‹ &nbsp; Back to Sign In</button>
+          <button type="button" class="security-support">Security Support</button>
+        </div>
       }
-      <a class="back-link" routerLink="/">Back to Feedzony</a>
+
+      @if (mode() !== 'reset') {
+        <footer class="auth-footer">
+          <span>▣ End-to-end TLS 1.3 encrypted</span>
+          <span>System Status: <b>Online</b></span>
+          <span>Security Whitespace</span>
+        </footer>
+      } @else {
+        <footer class="auth-footer reset-auth-footer">
+          <span>▣ Trouble accessing email? Verify with SMS / TID02 Key</span>
+        </footer>
+      }
     </section>
   }
 </main>

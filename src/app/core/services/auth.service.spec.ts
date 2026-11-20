@@ -41,6 +41,8 @@ describe('AuthService', () => {
         lastName: 'Lovelace',
         email: 'ada@example.com',
         password: 'correct horse battery staple',
+        accountType: 'BUSINESS_OWNER',
+        teamSize: '10-50',
       })
       .subscribe();
 
@@ -48,6 +50,14 @@ describe('AuthService', () => {
       'http://localhost:3000/api/v1/auth/register',
     );
     expect(registerRequest.request.method).toBe('POST');
+    expect(registerRequest.request.body).toEqual({
+      firstName: 'Ada',
+      lastName: 'Lovelace',
+      email: 'ada@example.com',
+      password: 'correct horse battery staple',
+      accountType: 'BUSINESS_OWNER',
+      teamSize: '10-50',
+    });
     registerRequest.flush(response);
 
     expect(service.user()).toEqual(response.user);
