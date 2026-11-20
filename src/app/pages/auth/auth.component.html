@@ -1,0 +1,91 @@
+<main class="auth-page">
+  <a class="brand" routerLink="/" aria-label="Feedzony home">Feed<span>zony</span></a>
+
+  @if (user(); as currentUser) {
+    <section class="auth-card logout-panel" aria-labelledby="logout-title">
+      <span class="status-mark" aria-hidden="true">✓</span>
+      <p class="eyebrow">ACCOUNT</p>
+      <h1 id="logout-title">You’re signed in</h1>
+      <p class="description">
+        Welcome{{ currentUser.firstName ? ', ' + currentUser.firstName : '' }}.
+        Your account is connected as <strong>{{ currentUser.email }}</strong>.
+      </p>
+
+      @if (errorMessage()) {
+        <p class="error-message" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <button class="primary-button" type="button" [disabled]="isLoading()" (click)="logout()">
+        {{ isLoading() ? 'Signing out…' : 'Log out' }}
+      </button>
+      <a class="back-link" routerLink="/">Back to Feedzony</a>
+    </section>
+  } @else {
+    <section class="auth-card" aria-labelledby="auth-title">
+      <p class="eyebrow">CUSTOMER EXPERIENCE PLATFORM</p>
+      <h1 id="auth-title">{{ mode() === 'login' ? 'Welcome back' : 'Create your account' }}</h1>
+      <p class="description">
+        {{ mode() === 'login' ? 'Log in to continue to Feedzony.' : 'Join Feedzony and make every voice count.' }}
+      </p>
+
+      <div class="mode-tabs" role="tablist" aria-label="Account action">
+        <button type="button" role="tab" [attr.aria-selected]="mode() === 'login'" (click)="selectMode('login')">Log in</button>
+        <button type="button" role="tab" [attr.aria-selected]="mode() === 'register'" (click)="selectMode('register')">Register</button>
+      </div>
+
+      @if (errorMessage()) {
+        <p class="error-message" role="alert">{{ errorMessage() }}</p>
+      }
+
+      @if (mode() === 'login') {
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+          <label for="login-email">Email address</label>
+          <input id="login-email" type="email" autocomplete="email" formControlName="email" placeholder="you@example.com" />
+          @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
+            <small class="field-error">Enter a valid email address.</small>
+          }
+
+          <label for="login-password">Password</label>
+          <input id="login-password" type="password" autocomplete="current-password" formControlName="password" placeholder="At least 8 characters" />
+          @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+            <small class="field-error">Password must be 8–128 characters.</small>
+          }
+
+          <button class="primary-button" type="submit" [disabled]="isLoading()">
+            {{ isLoading() ? 'Logging in…' : 'Log in' }}
+          </button>
+        </form>
+      } @else {
+        <form [formGroup]="registerForm" (ngSubmit)="register()">
+          <div class="name-row">
+            <div>
+              <label for="register-first-name">First name <span>(optional)</span></label>
+              <input id="register-first-name" type="text" autocomplete="given-name" formControlName="firstName" placeholder="Ada" />
+            </div>
+            <div>
+              <label for="register-last-name">Last name <span>(optional)</span></label>
+              <input id="register-last-name" type="text" autocomplete="family-name" formControlName="lastName" placeholder="Lovelace" />
+            </div>
+          </div>
+
+          <label for="register-email">Email address</label>
+          <input id="register-email" type="email" autocomplete="email" formControlName="email" placeholder="you@example.com" />
+          @if (registerForm.controls.email.touched && registerForm.controls.email.invalid) {
+            <small class="field-error">Enter a valid email address.</small>
+          }
+
+          <label for="register-password">Password</label>
+          <input id="register-password" type="password" autocomplete="new-password" formControlName="password" placeholder="At least 8 characters" />
+          @if (registerForm.controls.password.touched && registerForm.controls.password.invalid) {
+            <small class="field-error">Password must be 8–128 characters.</small>
+          }
+
+          <button class="primary-button" type="submit" [disabled]="isLoading()">
+            {{ isLoading() ? 'Creating account…' : 'Create account' }}
+          </button>
+        </form>
+      }
+      <a class="back-link" routerLink="/">Back to Feedzony</a>
+    </section>
+  }
+</main>

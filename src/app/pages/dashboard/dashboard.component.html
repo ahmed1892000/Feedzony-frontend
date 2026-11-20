@@ -1,0 +1,64 @@
+<div class="dashboard-page">
+  <header class="topbar">
+    <a class="brand" routerLink="/"><span class="brand-mark">f</span><span>feedzony</span></a>
+    <nav aria-label="Main navigation">
+      <a routerLink="/">Home</a>
+      <a routerLink="/feedback">Share feedback</a>
+      <app-auth-actions />
+      <a class="nav-cta" routerLink="/feedback">+ Add feedback</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="dashboard-heading">
+      <div><span class="eyebrow">COMMUNITY VOICES</span><h1>Feedback dashboard</h1><p>A closer look at what people are saying.</p></div>
+      <a class="button" routerLink="/feedback">Share your thoughts <span aria-hidden="true">→</span></a>
+    </section>
+
+    <section class="stats-grid" aria-label="Feedback summary">
+      <article class="stat-card"><span class="stat-label">Total responses</span><strong>{{ totalCount() }}</strong><span class="stat-foot">All-time feedback</span><span class="stat-icon peach">✦</span></article>
+      <article class="stat-card"><span class="stat-label">Average rating</span><strong>{{ averageRating() | number:'1.1-1' }}<small> / 5</small></strong><span class="stat-foot">Across all responses</span><span class="stat-icon gold">★</span></article>
+      <article class="stat-card"><span class="stat-label">Feedback categories</span><strong>{{ activeCategoryCount() }}</strong><span class="stat-foot">Categories with responses</span><span class="stat-icon green">◈</span></article>
+    </section>
+
+    <section class="insights-grid">
+      <article class="panel chart-panel">
+        <div class="panel-heading"><div><h2>Feedback by category</h2><p>How responses are distributed</p></div><span class="panel-menu" aria-hidden="true">···</span></div>
+        <div class="chart-area">
+          @if (totalCount() > 0) {
+            <div class="chart-wrap"><canvas baseChart [type]="'doughnut'" [data]="chartData()" [options]="chartOptions" aria-label="Feedback by category doughnut chart"></canvas></div>
+          } @else {
+            <div class="empty-chart"><span>◌</span><p>Your category breakdown will appear here.</p></div>
+          }
+          <ul class="legend">
+            @for (item of categories(); track item.name) {
+              <li><span class="legend-dot" [style.background]="item.color"></span>{{ item.name }}<strong>{{ categoryCounts().get(item.name) ?? 0 }}</strong></li>
+            }
+          </ul>
+        </div>
+      </article>
+
+      <article class="panel recent-panel">
+        <div class="panel-heading"><div><h2>Recent feedback</h2><p>The latest notes from the community</p></div><a routerLink="/feedback">Add new <span aria-hidden="true">↗</span></a></div>
+        @if (feedback().length) {
+          <div class="feedback-list">
+            @for (entry of feedback().slice(0, 5); track entry.id) {
+              <article class="feedback-item">
+                <div class="item-avatar">{{ entry.customerName.slice(0, 1).toUpperCase() }}</div>
+                <div class="item-content">
+                  <div class="item-title"><strong>{{ entry.customerName }}</strong><span>{{ entry.createdAt | date:'MMM d, y' }}</span></div>
+                  <span class="business-name">{{ entry.businessName }}</span>
+                  <div class="item-meta"><span class="category-tag">{{ entry.category }}</span><span class="item-stars" [attr.aria-label]="entry.rating + ' out of 5 stars'">{{ '★★★★★'.slice(0, entry.rating) }}<span class="muted-stars">{{ '★★★★★'.slice(entry.rating) }}</span></span></div>
+                  <p>{{ entry.comment }}</p>
+                </div>
+              </article>
+            }
+          </div>
+        } @else {
+          <div class="empty-state"><span class="empty-icon">✎</span><strong>It’s quiet here for now.</strong><p>Be the first to share feedback and help shape what comes next.</p><a routerLink="/feedback">Share feedback <span aria-hidden="true">→</span></a></div>
+        }
+      </article>
+    </section>
+  </main>
+  <footer class="site-footer"><span>© 2026 Feedzony</span><span>Every voice helps us grow <b>♥</b></span></footer>
+</div>

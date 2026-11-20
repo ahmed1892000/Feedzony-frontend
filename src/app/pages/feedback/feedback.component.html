@@ -1,0 +1,81 @@
+<div class="feedback-page">
+  <div class="feedback-container">
+    <a class="brand" routerLink="/" aria-label="Feedzony home">Feed<span>zony</span></a>
+
+    @if (!submitted) {
+      <h1>Share Your Experience</h1>
+      <p class="subtitle">Your feedback helps businesses improve their services.</p>
+
+      <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
+        <label for="business-name">Business Name</label>
+        <input
+          id="business-name"
+          type="text"
+          formControlName="businessName"
+          placeholder="Enter business name"
+        />
+
+        <label for="customer-name">Your Name</label>
+        <input
+          id="customer-name"
+          type="text"
+          formControlName="customerName"
+          placeholder="Enter your name"
+        />
+
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="example@email.com"
+        />
+
+        <span class="field-label" id="rating-label">Rate Your Experience</span>
+        <div class="stars" role="group" aria-labelledby="rating-label">
+          @for (star of [1, 2, 3, 4, 5]; track star) {
+            <button
+              type="button"
+              [attr.aria-label]="star + ' out of 5 stars'"
+              [attr.aria-pressed]="feedbackForm.controls.rating.value === star"
+              [class.active]="star <= feedbackForm.controls.rating.value"
+              (click)="setRating(star)"
+            >
+              ★
+            </button>
+          }
+        </div>
+
+        <label for="category">Feedback Category</label>
+        <select id="category" formControlName="category">
+          <option value="Service Quality">Service Quality</option>
+          <option value="Customer Support">Customer Support</option>
+          <option value="Product Quality">Product Quality</option>
+          <option value="Pricing">Pricing</option>
+          <option value="Overall Experience">Overall Experience</option>
+        </select>
+
+        <label for="comment">Your Feedback</label>
+        <textarea
+          id="comment"
+          formControlName="comment"
+          placeholder="Tell us about your experience..."
+          rows="5"
+        ></textarea>
+
+        @if (feedbackForm.invalid && feedbackForm.touched) {
+          <p class="error" role="alert">Please complete all required fields correctly.</p>
+        }
+
+        <button type="submit" class="submit-button">Submit Feedback</button>
+      </form>
+    } @else {
+      <div class="success" role="status">
+        <div class="success-icon" aria-hidden="true">✓</div>
+        <h1>Thank You!</h1>
+        <p>Your feedback has been submitted successfully.</p>
+        <button type="button" (click)="submitted = false">Submit Another Feedback</button>
+      </div>
+    }
+  </div>
+</div>

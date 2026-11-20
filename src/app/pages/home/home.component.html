@@ -1,0 +1,96 @@
+<div class="page-shell">
+  <header class="navbar">
+    <a class="logo" routerLink="/" aria-label="Feedzony home">Feed<span>zony</span></a>
+
+    <nav aria-label="Main navigation">
+      <a href="#features">Features</a>
+      <a href="#about">About</a>
+      <a routerLink="/dashboard">Dashboard</a>
+      <app-auth-actions />
+    </nav>
+
+    <a routerLink="/feedback" class="nav-button">Give Feedback</a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <span class="tag">CUSTOMER EXPERIENCE PLATFORM</span>
+
+        <h1>
+          Every Voice Matters.
+          <span>Every Feedback Counts.</span>
+        </h1>
+
+        <p>
+          Feedzony helps businesses understand their customers,
+          collect valuable feedback and improve their services.
+        </p>
+
+        <div class="hero-buttons">
+          <a routerLink="/feedback" class="primary-button">Share Your Feedback</a>
+          <a routerLink="/dashboard" class="secondary-button">Business Dashboard</a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <p class="card-eyebrow">FEEDBACK, MADE USEFUL</p>
+        <h2>One place for every perspective.</h2>
+        <ul class="capability-list">
+          <li><span>★</span><div><strong>Experience ratings</strong><small>Capture a clear 1–5 star score</small></div></li>
+          <li><span>◈</span><div><strong>Useful categories</strong><small>Group feedback by topic</small></div></li>
+          <li><span>↗</span><div><strong>Dashboard insights</strong><small>Review ratings and recent comments</small></div></li>
+        </ul>
+        <p class="small-text">A better experience starts by listening.</p>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <span class="section-tag">BUILT AROUND YOUR VOICE</span>
+      <h2>Why Feedzony?</h2>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <span class="feature-number">01</span>
+          <h3>Easy Feedback</h3>
+          <p>Customers can submit a business name, contact details, star rating, category, and written comment.</p>
+        </article>
+
+        <article class="feature-card">
+          <span class="feature-number">02</span>
+          <h3>Customer Insights</h3>
+          <p>The dashboard summarizes response count, average rating, category breakdown, and recent feedback.</p>
+        </article>
+
+        <article class="feature-card">
+          <span class="feature-number">03</span>
+          <h3>Better Decisions</h3>
+          <p>See customer comments alongside their rating and category to help spot areas to improve.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="project-details" id="about" aria-labelledby="about-title">
+      <div>
+        <span class="section-tag">ABOUT FEEDZONY</span>
+        <h2 id="about-title">Built to turn listening into action.</h2>
+      </div>
+      <div class="details-copy">
+        <p>
+          Feedzony is a customer feedback platform for collecting and reviewing
+          customer experiences. Each response includes a 1–5 rating, a feedback
+          category, and a written comment; the dashboard brings those responses
+          together into a quick overview.
+        </p>
+        <p>
+          You can create an account or log in to the connected authentication
+          service. Feedback submissions in this version are saved in this
+          browser, so they are not yet shared across devices or accounts.
+        </p>
+        <a routerLink="/feedback" class="details-link">Tell us about your experience <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 2026 Feedzony. All rights reserved.</footer>
+</div>

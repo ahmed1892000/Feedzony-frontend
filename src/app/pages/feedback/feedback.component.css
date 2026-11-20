@@ -1,0 +1,144 @@
+:host {
+  display: block;
+}
+
+.feedback-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 15px;
+  background: #f3f6fc;
+  font-family: Arial, sans-serif;
+}
+
+.feedback-container {
+  width: 100%;
+  max-width: 520px;
+  padding: 40px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 10px 40px #15243b12;
+}
+
+.brand {
+  display: block;
+  margin-bottom: 30px;
+  color: #15243b;
+  font-size: 25px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.brand span {
+  color: #3978ef;
+}
+
+h1 {
+  color: #15243b;
+  font-size: 29px;
+}
+
+.subtitle {
+  margin-bottom: 30px;
+  color: #7c8798;
+}
+
+label,
+.field-label {
+  display: block;
+  margin: 18px 0 8px;
+  color: #344054;
+  font-weight: 600;
+}
+
+input,
+select,
+textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #dce2ec;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #3978ef;
+}
+
+.stars {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.stars button {
+  border: none;
+  background: none;
+  color: #d5dbe5;
+  cursor: pointer;
+  font-size: 32px;
+}
+
+.stars button.active {
+  color: #ffb52e;
+}
+
+.stars button:focus-visible,
+.submit-button:focus-visible,
+.success button:focus-visible {
+  outline: 2px solid #3978ef;
+  outline-offset: 3px;
+}
+
+.submit-button,
+.success button {
+  width: 100%;
+  margin-top: 25px;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  background: #3978ef;
+  color: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.submit-button:hover,
+.success button:hover {
+  background: #2865d6;
+}
+
+.error {
+  color: #d92d20;
+  font-size: 13px;
+}
+
+.success {
+  padding: 30px 0;
+  text-align: center;
+}
+
+.success-icon {
+  width: 65px;
+  height: 65px;
+  display: grid;
+  place-items: center;
+  margin: auto;
+  border-radius: 50%;
+  background: #e5f8ec;
+  color: #16a34a;
+  font-size: 35px;
+}
+
+@media (max-width: 500px) {
+  .feedback-container {
+    padding: 25px;
+  }
+}

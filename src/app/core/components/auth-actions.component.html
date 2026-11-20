@@ -1,0 +1,13 @@
+<div class="auth-actions">
+  @if (user()) {
+    <button type="button" class="auth-link logout-link" [disabled]="isLoading()" (click)="logout()">
+      {{ isLoading() ? 'Logging out…' : 'Log out' }}
+    </button>
+  } @else {
+    <a class="auth-link" routerLink="/auth" [queryParams]="{ mode: 'login' }">Log in</a>
+    <a class="auth-link register-link" routerLink="/auth" [queryParams]="{ mode: 'register' }">Register</a>
+  }
+  @if (errorMessage()) {
+    <span class="logout-error" role="alert">{{ errorMessage() }}</span>
+  }
+</div>
